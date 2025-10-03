@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class control : MonoBehaviour
+public class MarioController : MonoBehaviour
 {
     [Header("Movimiento")]
     public float acceleration = 20f;
@@ -50,5 +50,17 @@ public class control : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
+
+
+        
+        // invertir sprite según dirección
+        if (moveInput > 0)
+            transform.localScale = new Vector3(1, 1, 1); // Mirando a la derecha
+        else if (moveInput < 0)
+            transform.localScale = new Vector3(-1, 1, 1); // Mirando a la izquierda
+         // aca termina la parte que invierte el script
+
+
+
     }
 }

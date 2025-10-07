@@ -25,42 +25,37 @@ public class Control : MonoBehaviour
 
     void Update()
     {
-        // Entrada horizontal
+        // Movimiento horizontal (izquierda/derecha)
         float moveInput = Input.GetAxisRaw("Horizontal");
-        bool isRunning = Input.GetKey(KeyCode.LeftShift); // Shift para correr
+        bool isRunning = Input.GetKey(KeyCode.LeftShift); // Shift para correr como loco
 
-        // Velocidad objetivo
+        // Calculamos la velocidad que queremos alcanzar
         float targetSpeed = moveInput * maxSpeed;
         if (isRunning) targetSpeed *= runMultiplier;
 
-        // Aceleración y desaceleración suave
+        // Aceleramos o frenamos suavemente según corresponda
         if (Mathf.Abs(targetSpeed) > Mathf.Abs(currentSpeed))
             currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.deltaTime);
         else
             currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, deceleration * Time.deltaTime);
 
-        // Aplicar velocidad horizontal
+        // Aplicamos la velocidad horizontal al Rigidbody
         rb.velocity = new Vector2(currentSpeed, rb.velocity.y);
 
-        // Verificar si está en el suelo
+        // Chequeamos si está pisando el suelo
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-        // Salto con barra espaciadora
+        // Salta cuando apretás la barra espaciadora y está en el piso
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
-
-        
-        // invertir sprite según dirección
+        // Damos vuelta el sprite según para dónde se mueve
         if (moveInput > 0)
             transform.localScale = new Vector3(1, 1, 1); // Mirando a la derecha
         else if (moveInput < 0)
             transform.localScale = new Vector3(-1, 1, 1); // Mirando a la izquierda
-         // aca termina la parte que invierte el script
-
-
-
+        // Acá termina la parte que lo hace mirar para el otro lado
     }
 }

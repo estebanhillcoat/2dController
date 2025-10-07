@@ -20,7 +20,7 @@ public class Control : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>(); // Esto hace que rb ahora sea el rigidbody del objeto que tiene el script
     }
 
     void Update()

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MarioController : MonoBehaviour
+public class Control : MonoBehaviour
 {
     [Header("Movimiento")]
     public float acceleration = 20f;

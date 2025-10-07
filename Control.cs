@@ -25,37 +25,50 @@ public class Control : MonoBehaviour
 
     void Update()
     {
-        // Movimiento horizontal (izquierda/derecha)
+        // Entrada horizontal
         float moveInput = Input.GetAxisRaw("Horizontal");
-        bool isRunning = Input.GetKey(KeyCode.LeftShift); // Shift para correr como loco
+        bool isRunning = Input.GetKey(KeyCode.LeftShift); // Shift para correr
 
-        // Calculamos la velocidad que queremos alcanzar
+        // Velocidad objetivo
         float targetSpeed = moveInput * maxSpeed;
         if (isRunning) targetSpeed *= runMultiplier;
 
-        // Aceleramos o frenamos suavemente según corresponda
+        // Aceleración y desaceleración suave
         if (Mathf.Abs(targetSpeed) > Mathf.Abs(currentSpeed))
             currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.deltaTime);
         else
             currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, deceleration * Time.deltaTime);
 
-        // Aplicamos la velocidad horizontal al Rigidbody
+        // Aplicar velocidad horizontal
         rb.velocity = new Vector2(currentSpeed, rb.velocity.y);
 
-        // Chequeamos si está pisando el suelo
+        // Verificar si está en el suelo
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-        // Salta cuando apretás la barra espaciadora y está en el piso
+        // Salto con barra espaciadora
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            float finalJumpForce = jumpForce;
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                finalJumpForce *= 1.5f;
+            }
+
+            rb.velocity = new Vector2(rb.velocity.x, finalJumpForce);
         }
 
-        // Damos vuelta el sprite según para dónde se mueve
+
+
+
+        // invertir sprite según dirección
         if (moveInput > 0)
             transform.localScale = new Vector3(1, 1, 1); // Mirando a la derecha
         else if (moveInput < 0)
             transform.localScale = new Vector3(-1, 1, 1); // Mirando a la izquierda
-        // Acá termina la parte que lo hace mirar para el otro lado
+         // aca termina la parte que invierte el script
+
+
+
     }
 }
